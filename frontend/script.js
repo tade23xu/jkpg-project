@@ -6,7 +6,7 @@ fetch("http://localhost:3000/api/stores")
 
     data.forEach((store) => {
       const li = document.createElement("li");
-      li.innerText = `${store.name} - ${store.district}`;
+      li.innerText = `${store.name} - ${store.district ?? "Not Specified"}`;
 
       const btn = document.createElement("button");
       btn.innerText = "Delete";
@@ -21,13 +21,14 @@ function addStore() {
   const name = document.getElementById("name").value;
   const district = document.getElementById("district").value;
   const category = document.getElementById("category").value;
+  const url = document.getElementById("url").value;
 
   fetch("http://localhost:3000/api/stores", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name, district, category }),
+    body: JSON.stringify({ name, district, category, url }),
   })
     .then((res) => res.json())
     .then((data) => {

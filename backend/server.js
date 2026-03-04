@@ -27,15 +27,15 @@ app.get("/api/stores", async (req, res) => {
 // POST add store
 app.post("/api/stores", async (req, res) => {
   try {
-    const { name, district, category } = req.body;
+    const { name, district, category, url } = req.body;
 
-    if (!name || !district || !category) {
-      return res.status(400).json({ error: "All fields are required" });
+    if (!name) {
+      return res.status(400).json({ error: "Name is required" });
     }
 
     const result = await pool.query(
-      "INSERT INTO stores (name, district, category) VALUES ($1, $2, $3) RETURNING *",
-      [name, district, category],
+      "INSERT INTO stores (name, district, category, url) VALUES ($1, $2, $3, $4) RETURNING *",
+      [name, district || null, category || null, url || null],
     );
 
     res.status(201).json(result.rows[0]);
@@ -48,15 +48,15 @@ app.post("/api/stores", async (req, res) => {
 app.put("/api/stores/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const { name, district, category } = req.body;
+    const { name, district, category, url } = req.body;
 
-    if (!name || !district || !category) {
-      return res.status(400).json({ error: "All fields are required" });
+    if (!name) {
+      return res.status(400).json({ error: "Name is required" });
     }
 
     const result = await pool.query(
-      "UPDATE stores SET name=$1, district=$2, category=$3 WHERE id=$4 RETURNING *",
-      [name, district, category, id],
+      "UPDATE stores SET name=$1, district=$2, category=$3, url=$4 WHERE id=$5 RETURNING *",
+      [name, district || null, category || null, url || null, id],
     );
 
     if (result.rows.length === 0) {
