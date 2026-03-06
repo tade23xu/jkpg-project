@@ -20,7 +20,6 @@ fetch("http://localhost:3000/api/stores")
 function addStore() {
   const name = document.getElementById("name").value;
   const district = document.getElementById("district").value;
-  const category = document.getElementById("category").value;
   const url = document.getElementById("url").value;
 
   fetch("http://localhost:3000/api/stores", {
@@ -28,7 +27,7 @@ function addStore() {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name, district, category, url }),
+    body: JSON.stringify({ name, district, url }),
   })
     .then((res) => res.json())
     .then((data) => {
@@ -41,14 +40,13 @@ function updateStore() {
   const id = document.getElementById("updateId").value;
   const name = document.getElementById("updateName").value;
   const district = document.getElementById("updateDistrict").value;
-  const category = document.getElementById("updateCategory").value;
 
   fetch(`http://localhost:3000/api/stores/${id}`, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ name, district, category }),
+    body: JSON.stringify({ name, district }),
   })
     .then((res) => res.json())
     .then((data) => {
