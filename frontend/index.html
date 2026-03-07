@@ -7,18 +7,33 @@
   <body>
     <h1>Stores</h1>
     <ul id="storeList"></ul>
-    <h2>Add Store</h2>
 
-    <input type="text" id="name" placeholder="Name" />
-    <input type="text" id="district" placeholder="District" />
-    <input type="text" id="url" placeholder="URL" />
-    <button onclick="addStore()">Add</button>
-    <h2>Update Store</h2>
+    <div id="addStore">
+      <h2>Add Store</h2>
+      <input type="text" id="name" placeholder="Name" />
+      <input type="text" id="district" placeholder="District" />
+      <input type="text" id="url" placeholder="URL" />
+      <button onclick="addStore()">Add</button>
+    </div>
+    <div id="updateStore">
+      <h2>Update Store</h2>
+      <input type="number" id="updateId" placeholder="Store ID" />
+      <input type="text" id="updateName" placeholder="New Name" />
+      <input type="text" id="updateDistrict" placeholder="New District" />
+      <button onclick="updateStore()">Update</button>
+    </div>
+    
+    <div id="adminLoginDiv">
+      <h2>AdminLogin</h2>
 
-    <input type="number" id="updateId" placeholder="Store ID" />
-    <input type="text" id="updateName" placeholder="New Name" />
-    <input type="text" id="updateDistrict" placeholder="New District" />
-    <button onclick="updateStore()">Update</button>
+      <input type="text" id="adminName" placeholder="name">
+      <input type="password" id="adminPassword" placeholder="password">
+      <button onclick="adminLogin()">Login</button>
+    </div>
+
+    <div id="logoutDiv">
+      <button onclick="adminLogout()">logout</button>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>

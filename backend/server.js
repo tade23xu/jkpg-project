@@ -1,4 +1,6 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
+const crypto = require("crypto");
 const { Pool } = require("pg");
 const cors = require("cors");
 
@@ -13,7 +15,15 @@ const pool = new Pool({
   password: "postgres",
   port: 5432,
 });
+/****************
+ * session for admin login
+ **************/
+app.use(express.static("../frontend"));
+const SesSecret = "SecretSession" //session secret
 
+const sessions = {}
+
+app.use(cookieParser(SesSecret))
 // GET all stores
 app.get("/api/stores", async (req, res) => {
   try {
@@ -88,7 +98,46 @@ app.delete("/api/stores/:id", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+/*********************
+ * Admin Login 
+ * ******************/
+app.post("/Login",express.json(),(req,res)=>{
+  const {name,password} = req.body
 
+  if(name === "admin" && password === "admin123"){
+    const token = crypto.randomBytes(64).toString('hex')
+    sessions[token] = {name}
+
+    res.cookie("authToken", token, {signed: true, httpOnly:true,sameSite: "lax"})
+
+    res.status(201).json({success:true });
+
+  }else{
+    res.status(401).json({success:false });
+  }
+
+})
+
+/********************
+ * check if admins is logged in
+********************/
+app.get("/checkLoggedIn",(req,res)=>{
+  const token = req.signedCookies.authToken
+  res.json({isLoggedIn: token && sessions[token] ? true : false})
+})
+
+/********************
+ * Logout
+********************/
+app.get('/logout', (req, res)=> {
+  const token = req.signedCookies.authToken
+
+  if(token){
+    delete sessions[token]
+  }
+  res.clearCookie("authToken")
+  res.status(201).json({success:true})
+})
 // listen
 app.listen(3000, () => {
   console.log("Server running on http://localhost:3000");
