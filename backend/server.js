@@ -18,7 +18,12 @@ const pool = new Pool({
 /****************
  * session for admin login
  **************/
+// this is if you want the site on localhost 3000
 app.use(express.static("../frontend"));
+
+
+
+
 const SesSecret = "SecretSession" //session secret
 
 const sessions = {}
